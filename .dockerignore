@@ -1,0 +1,11 @@
+.git/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+logs/
+notebook/
+catboost_info/
+artifacts/*.csv
+artifacts/*.json
