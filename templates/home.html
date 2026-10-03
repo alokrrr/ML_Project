@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f8">
+    <title>Student Performance | Insight</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{{ url_for('index') }}" aria-label="Insight home">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M6 23.5 12.2 17l4.2 3.7L26 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20.5 10H26v5.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="brand-name">insight<span>.</span></span>
+        </a>
+        <div class="header-meta">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Student performance model</span>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <section class="intro" aria-labelledby="page-title">
+            <div class="eyebrow"><span class="eyebrow-icon" aria-hidden="true">✳</span> MACHINE LEARNING PREDICTION</div>
+            <h1 id="page-title">A clearer view of<br class="desktop-break"> student performance.</h1>
+            <p class="intro-copy">Enter a few learner details and assessment scores to estimate their mathematics score.</p>
+        </section>
+
+        <div class="workspace">
+            <section class="form-card" aria-labelledby="form-title">
+                <div class="card-heading">
+                    <div class="heading-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="step-label">PREDICTION INPUT</p>
+                        <h2 id="form-title">Learner profile</h2>
+                    </div>
+                    <span class="required-note"><span aria-hidden="true">*</span> Required</span>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-error" role="alert">
+                    <span class="alert-icon" aria-hidden="true">!</span>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+
+                <form id="prediction-form" action="{{ url_for('predict_datapoint') }}" method="post">
+                    <fieldset class="form-section">
+                        <legend class="section-title">Background</legend>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="gender">Gender <span aria-hidden="true">*</span></label>
+                                <div class="select-wrap">
+                                    <select id="gender" name="gender" required>
+                                        <option value="" disabled {% if not form_data or not form_data.get('gender') %}selected{% endif %}>Select gender</option>
+                                        <option value="female" {% if form_data and form_data.get('gender') == 'female' %}selected{% endif %}>Female</option>
+                                        <option value="male" {% if form_data and form_data.get('gender') == 'male' %}selected{% endif %}>Male</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="ethnicity">Race or ethnicity <span aria-hidden="true">*</span></label>
+                                <div class="select-wrap">
+                                    <select id="ethnicity" name="ethnicity" required>
+                                        <option value="" disabled {% if not form_data or not form_data.get('ethnicity') %}selected{% endif %}>Select a group</option>
+                                        {% for group in ['group A', 'group B', 'group C', 'group D', 'group E'] %}
+                                        <option value="{{ group }}" {% if form_data and form_data.get('ethnicity') == group %}selected{% endif %}>{{ group|title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field field-wide">
+                                <label for="parental_level_of_education">Parent or guardian education <span aria-hidden="true">*</span></label>
+                                <div class="select-wrap">
+                                    <select id="parental_level_of_education" name="parental_level_of_education" required>
+                                        <option value="" disabled {% if not form_data or not form_data.get('parental_level_of_education') %}selected{% endif %}>Select highest education level</option>
+                                        {% for level in ["associate's degree", "bachelor's degree", "high school", "master's degree", "some college", "some high school"] %}
+                                        <option value="{{ level }}" {% if form_data and form_data.get('parental_level_of_education') == level %}selected{% endif %}>{{ level|title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="lunch">Lunch plan <span aria-hidden="true">*</span></label>
+                                <div class="select-wrap">
+                                    <select id="lunch" name="lunch" required>
+                                        <option value="" disabled {% if not form_data or not form_data.get('lunch') %}selected{% endif %}>Select a plan</option>
+                                        <option value="standard" {% if form_data and form_data.get('lunch') == 'standard' %}selected{% endif %}>Standard</option>
+                                        <option value="free/reduced" {% if form_data and form_data.get('lunch') == 'free/reduced' %}selected{% endif %}>Free or reduced</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="test_preparation_course">Test preparation <span aria-hidden="true">*</span></label>
+                                <div class="select-wrap">
+                                    <select id="test_preparation_course" name="test_preparation_course" required>
+                                        <option value="" disabled {% if not form_data or not form_data.get('test_preparation_course') %}selected{% endif %}>Select status</option>
+                                        <option value="none" {% if form_data and form_data.get('test_preparation_course') == 'none' %}selected{% endif %}>Not completed</option>
+                                        <option value="completed" {% if form_data and form_data.get('test_preparation_course') == 'completed' %}selected{% endif %}>Completed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section scores-section">
+                        <legend class="section-title">Assessment scores</legend>
+                        <p class="section-description">Enter the learner's scores from 0 to 100.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="reading_score">Reading score <span aria-hidden="true">*</span></label>
+                                <div class="number-wrap">
+                                    <input id="reading_score" name="reading_score" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="e.g. 78" value="{{ form_data.get('reading_score', '') if form_data else '' }}" required>
+                                    <span aria-hidden="true">/ 100</span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="writing_score">Writing score <span aria-hidden="true">*</span></label>
+                                <div class="number-wrap">
+                                    <input id="writing_score" name="writing_score" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="e.g. 84" value="{{ form_data.get('writing_score', '') if form_data else '' }}" required>
+                                    <span aria-hidden="true">/ 100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-actions">
+                        <p class="privacy-note"><span aria-hidden="true">↗</span> Your inputs are used only to generate this estimate.</p>
+                        <button class="primary-button" id="predict-button" type="submit">
+                            <span class="button-label">Generate prediction</span>
+                            <span class="button-loader" aria-hidden="true"></span>
+                            <svg class="button-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="result-card {% if results is not none and results is defined %}has-result{% endif %}" aria-labelledby="result-title" aria-live="polite">
+                <div class="result-topline">
+                    <span class="result-badge"><span aria-hidden="true">✦</span> MODEL OUTPUT</span>
+                    <span class="result-index">01</span>
+                </div>
+                <div class="result-content">
+                    {% if results is defined and results is not none %}
+                    <div class="result-symbol result-symbol-success" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <path d="m8 17 5 5L24 11" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <p class="result-kicker">ESTIMATED MATH SCORE</p>
+                    <h2 id="result-title" class="result-value">{{ '%.1f'|format(results|float) }}<span>/100</span></h2>
+                    <p class="result-description">This is the model's estimate of the learner's mathematics score based on the profile and reading and writing scores provided.</p>
+                    <div class="result-divider"></div>
+                    <a class="secondary-button" href="{{ url_for('index') }}">Try another prediction <span aria-hidden="true">↗</span></a>
+                    {% else %}
+                    <div class="result-symbol result-symbol-empty" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <path d="M7 24V14m9 10V8m9 16v-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                            <path d="M5 27h22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <p class="result-kicker">YOUR RESULT WILL APPEAR HERE</p>
+                    <h2 id="result-title" class="result-placeholder">Ready when you are.</h2>
+                    <p class="result-description">Complete the learner profile and submit it to see an estimated mathematics score.</p>
+                    <div class="result-divider"></div>
+                    <div class="result-footnote"><span class="footnote-dot" aria-hidden="true"></span> No confidence score is provided by this model.</div>
+                    {% endif %}
+                </div>
+                <div class="result-decoration" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </aside>
+        </div>
+        <footer class="page-footer">
+            <span>Student Performance Indicator</span>
+            <span>Predictions are estimates, not guarantees.</span>
+        </footer>
+    </main>
+</body>
+</html>
