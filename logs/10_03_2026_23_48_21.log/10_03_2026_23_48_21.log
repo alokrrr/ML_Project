@@ -3,3 +3,17 @@
  * Running on http://127.0.0.1:5000
  * Running on http://10.29.195.66:5000
 [ 2026-10-03 23:48:21,990 ] 97 werkzeug - INFO - [33mPress CTRL+C to quit[0m
+[ 2026-10-03 23:55:15,187 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:55:15] "GET / HTTP/1.1" 200 -
+[ 2026-10-03 23:55:15,235 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:55:15] "GET /static/css/style.css HTTP/1.1" 200 -
+[ 2026-10-03 23:55:15,263 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:55:15] "GET /static/js/app.js HTTP/1.1" 200 -
+[ 2026-10-03 23:58:47,678 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:58:47] "GET / HTTP/1.1" 200 -
+[ 2026-10-03 23:58:47,721 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:58:47] "GET /static/css/style.css HTTP/1.1" 200 -
+[ 2026-10-03 23:58:47,726 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:58:47] "GET /static/js/app.js HTTP/1.1" 200 -
+[ 2026-10-03 23:58:48,311 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:58:48] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[ 2026-10-03 23:59:25,156 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:59:25] "POST /predictdata HTTP/1.1" 200 -
+[ 2026-10-03 23:59:25,165 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:59:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[ 2026-10-03 23:59:25,165 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:59:25] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+[ 2026-10-03 23:59:25,185 ] 97 werkzeug - INFO - 127.0.0.1 - - [03/Oct/2026 23:59:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+[ 2026-10-04 00:00:00,186 ] 97 werkzeug - INFO - 127.0.0.1 - - [04/Oct/2026 00:00:00] "GET /predictdata HTTP/1.1" 200 -
+[ 2026-10-04 00:00:00,210 ] 97 werkzeug - INFO - 127.0.0.1 - - [04/Oct/2026 00:00:00] "GET /static/css/style.css HTTP/1.1" 200 -
+[ 2026-10-04 00:00:00,210 ] 97 werkzeug - INFO - 127.0.0.1 - - [04/Oct/2026 00:00:00] "GET /static/js/app.js HTTP/1.1" 200 -
